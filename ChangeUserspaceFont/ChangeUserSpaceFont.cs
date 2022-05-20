@@ -51,6 +51,7 @@ namespace ChangeUserspaceFont
         {
             private static StaticFont? fontAsset;
             private static bool fontHooked = false;
+            private static readonly Uri defaultFontURL = new Uri("Neosdb:///c801b8d2522fb554678f17f4597158b1af3f9be3abd6ce35d5a3112a81e2bf39.ttf");
 
             [HarmonyPatch(typeof(Userspace), "OnAttach")]
             [HarmonyPostfix]
@@ -67,26 +68,38 @@ namespace ChangeUserspaceFont
             }
             public static void Postfix()
             {
+                // Disable the font override on runtime
+                if (!config.GetValue(Enabled))
+                {
+                    if (fontHooked)
+                    {
+                        fontAsset.URL.Value = defaultFontURL;
+                        fontAsset.Padding.Value = 1;
+                        fontAsset.PixelRange.Value = 4;
+                        fontAsset.GlyphEmSize.Value = 32;
+                    }
+                }
+                
                 //Update any font properties on change
-                if (fontHooked && fontAsset.URL != config.GetValue(FontURL))
+                if (config.GetValue(Enabled) && fontHooked && fontAsset.URL != config.GetValue(FontURL))
                 {
                     fontAsset.URL.Value = config.GetValue(FontURL);
                     Msg("Userspace font updated!");
                 }
 
-                if (fontHooked && fontAsset.Padding != config.GetValue(Padding))
+                if (config.GetValue(Enabled) && fontHooked && fontAsset.Padding != config.GetValue(Padding))
                 {
                     fontAsset.Padding.Value = config.GetValue(Padding);
                     Msg("Userspace font padding updated!");
                 }
 
-                if (fontHooked && fontAsset.PixelRange != config.GetValue(PixelRange))
+                if (config.GetValue(Enabled) && fontHooked && fontAsset.PixelRange != config.GetValue(PixelRange))
                 {
                     fontAsset.PixelRange.Value = config.GetValue(PixelRange);
                     Msg("Userspace font pixel range updated!");
                 }
 
-                if (fontHooked && fontAsset.GlyphEmSize != config.GetValue(GlyphEmSize))
+                if (config.GetValue(Enabled) && fontHooked && fontAsset.GlyphEmSize != config.GetValue(GlyphEmSize))
                 {
                     fontAsset.GlyphEmSize.Value = config.GetValue(GlyphEmSize);
                     Msg("Userspace font glyph em size updated!");
