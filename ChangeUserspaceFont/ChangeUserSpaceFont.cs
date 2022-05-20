@@ -53,24 +53,25 @@ namespace ChangeUserspaceFont
         {
             private static StaticFont? fontAsset;
             private static bool fontHooked = false;
-            private static readonly Uri targetFontURL = config.GetValue(FontURL);
-            private static readonly bool tryFontHook = config.GetValue(TryHook);
 
             //public static bool Prefix()
             //{
             //    if (config == null) return false; 
             //}
 
+            [HarmonyPatch(typeof(Userspace), "OnAttach")]
             [HarmonyPostfix]
-            [HarmonyPatch(typeof(FontChain), "OnAwake")]
-            public static void Postfix(FontChain __instance)
+            public static void Postfix(Userspace __instance)
             {
                 if (config == null) return;
 
-                Msg("FontChain in " + __instance.World.Name + " awoke on " + __instance.Slot.Name);
-                if (config.GetValue(Enabled) && __instance.World == Userspace.UserspaceWorld && __instance.Slot == Userspace.UserspaceWorld.RootSlot)
+                FontChain _fontChain = Userspace.UserspaceWorld.RootSlot.GetComponent<FontChain>();
+
+                Msg("FontChain in " + _fontChain.World.Name + " awoke on " + _fontChain.Slot.Name);
+                
+                if (config.GetValue(Enabled) && _fontChain.World == Userspace.UserspaceWorld && _fontChain.Slot == Userspace.UserspaceWorld.RootSlot)
                 {
-                    HookFont(__instance);
+                    HookFont(_fontChain);
                 }
             }
 
@@ -84,7 +85,7 @@ namespace ChangeUserspaceFont
                     fontAsset.Padding.Value = config.GetValue(Padding);
                     fontAsset.PixelRange.Value = config.GetValue(PixelRange);
                     fontAsset.GlyphEmSize.Value = config.GetValue(GlyphEmSize);
-
+    
                     Msg("Successfully hooked into Font URL");
                     fontHooked = true;
                     config.Set(TryHook, false);
@@ -100,71 +101,46 @@ namespace ChangeUserspaceFont
                 }
             }
 
-
             public static void Postfix()
             {
                 if (config == null) return;
-
-                //if (config.GetValue(Enabled) && tryFontHook && !fontHooked)
-                //{
-                //    try
-                //    {
-                //        Slot _rootSlot = Userspace.UserspaceWorld.RootSlot;
-                //        Msg(_rootSlot);
-                //        FontChain _fontChain = (FontChain)_rootSlot.GetComponent("FrooxEngine.FontChain");
-                //        Msg(_fontChain);
-                //        StaticFont _fontAsset = (StaticFont)_fontChain.MainFont;
-                //        Msg(_fontAsset);
-                //        fontURL = _fontAsset.URL;
-                //        fontURL.Value = targetFontURL;
-                //        Msg(fontURL, fontURL.Value);
-                //        Msg("Successfully hooked to Font URL");
-                //        fontHooked = true;
-                //        config.Set(TryHook, false);
-                //    }
-                //    catch
-                //    {
-                //        Msg("Failed to hook to FontURL");
-                //        config.Set(TryHook, false);
-                //    }
-                //}
 
                 if (config.GetValue(DebugValues))
                 {
                     Msg(fontAsset, fontAsset.URL, fontAsset.Slot.Name, fontAsset.World.Name);
                 }
 
-                //else
-                //{
-                //    Debug("Hook check didn't pass");
-                //}
-
                 if (fontHooked && fontAsset.URL != config.GetValue(FontURL))
                 {
                     fontAsset.URL.Value = config.GetValue(FontURL);
                     Msg("Userspace font updated!");
                 }
+
                 if (fontHooked && fontAsset.Padding != config.GetValue(Padding))
                 {
                     fontAsset.Padding.Value = config.GetValue(Padding);
                     Msg("Userspace font padding updated!");
                 }
+
                 if (fontHooked && fontAsset.PixelRange != config.GetValue(PixelRange))
                 {
                     fontAsset.PixelRange.Value = config.GetValue(PixelRange);
                     Msg("Userspace font pixel range updated!");
                 }
+
                 if (fontHooked && fontAsset.GlyphEmSize != config.GetValue(GlyphEmSize))
                 {
                     fontAsset.GlyphEmSize.Value = config.GetValue(GlyphEmSize);
                     Msg("Userspace font glyph em size updated!");
                 }
+
                 if (config.GetValue(Enabled) && config.GetValue(TryHook))
                 {
-                    HookFont((FontChain)Userspace.UserspaceWorld.RootSlot.GetComponent("FrooxEngine.FontChain"));
+                    HookFont(Userspace.UserspaceWorld.RootSlot.GetComponent<FontChain>());
                     config.Set(TryHook, false);
                 }
             }
+
         }
     }
 }
