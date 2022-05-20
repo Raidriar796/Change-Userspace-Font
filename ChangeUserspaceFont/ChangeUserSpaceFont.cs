@@ -12,7 +12,7 @@ namespace ChangeUserspaceFont
     {
         public override string Name => "ChangeUserSpaceFont";
         public override string Author => "Hayden";
-        public override string Version => "1.0.0";
+        public override string Version => "1.0.1";
         public override string Link => "https://github.com/Hayden-Fluff/Change-Userspace-Font";
 
         [AutoRegisterConfigKey]
