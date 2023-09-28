@@ -1,18 +1,18 @@
 ﻿using HarmonyLib;
-using NeosModLoader;
+using ResoniteModLoader;
 using FrooxEngine;
 using System;
-using BaseX;
+using Elements.Core;
 using System.Collections.Generic;
 
 
 namespace ChangeUserspaceFont
 {
-    public class ChangeUserspaceFont : NeosMod
+    public class ChangeUserspaceFont : ResoniteMod
     {
         public override string Name => "ChangeUserSpaceFont";
-        public override string Author => "Hayden";
-        public override string Version => "1.0.1";
+        public override string Author => "Hayden (ported to Resonite by Raidriar796)";
+        public override string Version => "1.0.2";
         public override string Link => "https://github.com/Hayden-Fluff/Change-Userspace-Font";
 
         [AutoRegisterConfigKey]
@@ -21,7 +21,7 @@ namespace ChangeUserspaceFont
 
         [AutoRegisterConfigKey]
         public static readonly ModConfigurationKey<Uri> FontURL =
-            new ModConfigurationKey<Uri>("FontURL", "Font URL", () => new Uri("Neosdb:///c801b8d2522fb554678f17f4597158b1af3f9be3abd6ce35d5a3112a81e2bf39.ttf"));
+            new ModConfigurationKey<Uri>("FontURL", "Font URL", () => new Uri("Resonitedb:///c801b8d2522fb554678f17f4597158b1af3f9be3abd6ce35d5a3112a81e2bf39.ttf"));
         [AutoRegisterConfigKey]
         public static readonly ModConfigurationKey<int> Padding =
             new ModConfigurationKey<int>("Padding", "Font Padding", () => 1);
@@ -51,7 +51,7 @@ namespace ChangeUserspaceFont
         {
             private static StaticFont? fontAsset;
             private static bool fontHooked = false;
-            private static readonly Uri defaultFontURL = new Uri("Neosdb:///c801b8d2522fb554678f17f4597158b1af3f9be3abd6ce35d5a3112a81e2bf39.ttf");
+            private static readonly Uri defaultFontURL = new Uri("resdb:///fcff04f4bec2b3636f05ed894dc1f9a752c4cb587ee49857ec7a82abaf6ca016.ttf");
 
             [HarmonyPatch(typeof(Userspace), "OnAttach")]
             [HarmonyPostfix]
