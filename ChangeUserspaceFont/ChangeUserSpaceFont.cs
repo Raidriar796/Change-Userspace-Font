@@ -11,8 +11,8 @@ namespace ChangeUserspaceFont
     public class ChangeUserspaceFont : ResoniteMod
     {
         public override string Name => "ChangeUserSpaceFont";
-        public override string Author => "Hayden (ported to Resonite by Raidriar796)";
-        public override string Version => "1.0.2";
+        public override string Author => "Hayden (Resonite 'port' by Raidriar796)";
+        public override string Version => "1.0.3";
         public override string Link => "https://github.com/Hayden-Fluff/Change-Userspace-Font";
 
         [AutoRegisterConfigKey]
@@ -21,7 +21,7 @@ namespace ChangeUserspaceFont
 
         [AutoRegisterConfigKey]
         public static readonly ModConfigurationKey<Uri> FontURL =
-            new ModConfigurationKey<Uri>("FontURL", "Font URL", () => new Uri("Resonitedb:///c801b8d2522fb554678f17f4597158b1af3f9be3abd6ce35d5a3112a81e2bf39.ttf"));
+            new ModConfigurationKey<Uri>("FontURL", "Font URL", () => new Uri("resdb:///c801b8d2522fb554678f17f4597158b1af3f9be3abd6ce35d5a3112a81e2bf39.ttf"));
         [AutoRegisterConfigKey]
         public static readonly ModConfigurationKey<int> Padding =
             new ModConfigurationKey<int>("Padding", "Font Padding", () => 1);
