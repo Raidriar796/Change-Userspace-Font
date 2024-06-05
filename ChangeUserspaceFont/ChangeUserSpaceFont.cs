@@ -13,7 +13,7 @@ namespace ChangeUserspaceFont
         public override string Name => "ChangeUserSpaceFont";
         public override string Author => "Hayden (Resonite 'port' by Raidriar796)";
         public override string Version => "1.0.3";
-        public override string Link => "https://github.com/Hayden-Fluff/Change-Userspace-Font";
+        public override string Link => "https://github.com/Raidriar796/Change-Userspace-Font";
 
         [AutoRegisterConfigKey]
         public static readonly ModConfigurationKey<bool> Enabled =
